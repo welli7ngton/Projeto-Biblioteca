@@ -32,7 +32,6 @@ def cadastra_livro():
     numeracao = input("Digite a numeração: ")
     while True:
         if numeracao.isdigit():
-            numeracao = numeracao
             while True:
                 if numeracao not in id_livro:
                     break
