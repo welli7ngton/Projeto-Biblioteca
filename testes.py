@@ -1,3 +1,3 @@
-a = input()
+a = {1:"wellington", 2:"joao"}
 
-print(a.isdigit())
+print(a[1])
