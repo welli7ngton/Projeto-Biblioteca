@@ -1,0 +1,11 @@
+dev tools documentation pandas
+https://devdocs.io/pandas~0.25/
+
+pandas documentation
+https://pandas.pydata.org/docs/getting_started/index.html#getting-started
+
+pandas documentation excel
+https://pandas.pydata.org/docs/reference/api/pandas.read_excel.html
+
+pandas writer
+https://betterprogramming.pub/using-python-pandas-with-excel-d5082102ca27
