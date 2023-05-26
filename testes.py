@@ -1,3 +1,4 @@
-a = {1:"wellington", 2:"joao"}
+import openpyxl
 
-print(a[1])
+for item in dir(openpyxl):
+    print(item)

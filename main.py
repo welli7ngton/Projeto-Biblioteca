@@ -1,18 +1,55 @@
-import random, time
+import random, openpyxl, time
+from openpyxl import Workbook
 import pandas as pd
 
-id_livro = []
 id_aluno = []
+id_livro = []
 
-info_livros = {}
 info_alunos = {}
+info_livros = {}
+
+
+
+
+try:
+    database_ids = openpyxl.load_workbook("ids_alunos_livros.xlsx")
+except FileNotFoundError:
+    database_ids = Workbook()
+    database_ids.save("ids_alunos_livros.xlsx")
+
+
+if "ids_alunos"  in database_ids.sheetnames:
+    planilha_ids_alunos = database_ids["ids_alunos"]
+else:
+    planilha_ids_alunos = database_ids.create_sheet("ids_alunos")
+    planilha_ids_alunos.title = "ids_alunos"
+    database_ids.save("ids_alunos_livros.xlsx")
+
+for celula in planilha_ids_alunos["A"]:
+    id_aluno.append(celula.value)
+
+
+if "ids_livros"  in database_ids.sheetnames:
+    planilha_ids_livros = database_ids["ids_livros"]
+else:
+    planilha_ids_livros = database_ids.create_sheet("ids_livros")
+    planilha_ids_livros.title = "ids_livros"
+    database_ids.save("ids_alunos_livros.xlsx")
+    
+for celula in planilha_ids_livros["A"]:
+    id_livro.append(celula.value)
+
+
 
 def cadastra_aluno():
-    
+       
     verificador = random.randint(0, 9999)
     if verificador not in id_aluno:
         id_aluno.append(verificador)
+ 
     nome = input("Nome do Aluno: ")
+    
+
     serie = input("Série: ")
     turno = input("Turno: ")
     idade = int(input("Idade: "))
@@ -21,6 +58,15 @@ def cadastra_aluno():
     print("Endereço: Rua, Bairro, Número.:")
     endereco = input()
     info_alunos[str(verificador)] = f"Nome = {nome.capitalize()}, Série = {serie}, Turno = {turno}, Idade = {idade}, Contato = {contato}, Endereço = {endereco.capitalize()}"
+
+    
+    proxima_linha_aluno = planilha_ids_alunos.max_row + 1
+
+    planilha_ids_alunos[f"A{proxima_linha_aluno}"] = verificador
+    planilha_ids_alunos[f"B{proxima_linha_aluno}"] = nome.capitalize()
+
+    database_ids.save("ids_alunos_livros.xlsx")
+    
 
 def cadastra_livro():
     
@@ -42,12 +88,22 @@ def cadastra_livro():
         else:
             print("Digite uma numeração válida.")
 
+            
+    proxima_linha_livro = planilha_ids_livros.max_row + 1
+
+    planilha_ids_livros[f"A{proxima_linha_livro}"] = numeracao
+    planilha_ids_livros[f"B{proxima_linha_livro}"] = titulo_livro.capitalize()
+    planilha_ids_livros[f"C{proxima_linha_livro}"] = autor.capitalize()
+    
+
 
     info_livros[numeracao] = f"Título = {titulo_livro.capitalize()}, Gênero = {genero.capitalize()}, Autor = {autor.capitalize()},Editora =  {editora.capitalize()}, Quantidade = {qtd}, Numeração = {numeracao}"
     id_livro.append(numeracao) 
     print("as informações do livro cadasrtado são:")  
     print("NUMERAÇÃO: ", numeracao) 
     print(info_livros[numeracao])
+
+    database_ids.save("ids_alunos_livros.xlsx")
 
 def altera_livro():
     while True:
@@ -92,10 +148,17 @@ def altera_aluno():
             break
 
 
+##################################################################################################################
 
-  
+
+
+
 while True:
-    print("#######MENU#######")
+    print(len(id_aluno), "aluno")
+    print(len(id_livro), "livro")
+    print(id_aluno, "aluno")
+    print(id_livro, "livro")
+    print("####### MENU #######")
     print("1 = CADASTRO LIVRO/ALUNO")
     print("2 = ALTERAÇÃO DE CADASTRO")
     print("0 = ENCERRAR PROGRAMA")
@@ -167,6 +230,8 @@ while True:
         
 
     elif r == "0":
+        
         print("Encerrando...")
+        database_ids.save("ids_alunos_livros.xlsx")
         time.sleep(3)
         break
