@@ -33,16 +33,15 @@ def cadastra_livro():
     while True:
         if numeracao.isdigit():
             while True:
-                if numeracao not in id_livro:
+                if numeracao not in id_livro and numeracao.isdigit():
                     break
                 else:
-                    print("Livro já cadastrado.")
-                    numeracao = input("Digite uma numeração que não foi cadastrada: ")
+                    print("Livro já cadastrado ou numeração inválida.")
+                    numeracao = input("Digite uma numeração válida: ")
             break
         else:
             print("Digite uma numeração válida.")
 
-        numeracao = input("Digite a numeração: ")
 
     info_livros[numeracao] = f"Título = {titulo_livro.capitalize()}, Gênero = {genero.capitalize()}, Autor = {autor.capitalize()},Editora =  {editora.capitalize()}, Quantidade = {qtd}, Numeração = {numeracao}"
     id_livro.append(numeracao) 
