@@ -1,15 +1,15 @@
 import random, openpyxl, time
 from openpyxl import Workbook
 
-
+# listas para salvar os identificadores únicos e não ter cadastro duplicado
 id_aluno = []
 id_livro = []
 
+# dicionarios para vincular identificadores únicos aos atributos 
 info_alunos = {}
 info_livros = {}
 
-
-##################################################################################################################
+#################################################################################################################
 
 try:
     database_ids = openpyxl.load_workbook("ids_alunos_livros.xlsx")
@@ -29,6 +29,16 @@ for celula in planilha_ids_alunos["A"]:
     id_aluno.append(celula.value)
 
 
+# o primeiro for cria uma chave de dicionáro para cada identificador único do aluno com uma lista vazia
+# o segundo for itera sobre as colunas da planilha e adiciona os dados(das linhas) na lista vinculando o 
+# identificador único a cada conjunto de atribunos ex: nome, idade, turno...
+#///////////////////////////////////////////////////////////////////////////////////////////////////////////
+for a in range(len(id_aluno)):                              #///////////////////////////////////////////////
+    info_alunos[id_aluno[a]] = []                           #///////////////////////////////////////////////
+    for coluna in planilha_ids_alunos.iter_cols():          #///////////////////////////////////////////////
+        info_alunos[id_aluno[a]].append(coluna[a].value)    #///////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 if "ids_livros"  in database_ids.sheetnames:
     planilha_ids_livros = database_ids["ids_livros"]
 else:
@@ -38,6 +48,18 @@ else:
     
 for celula in planilha_ids_livros["A"]:
     id_livro.append(celula.value)
+
+
+
+# o primeiro for cria uma chave de dicionáro para cada identificador único de livro com uma lista vazia
+# o segundo for itera sobre as colunas da planilha e adiciona os dados(das linhas) na lista vinculando o 
+# identificador único a cada conjunto de atribunos ex, titulo, autor, editora...
+#///////////////////////////////////////////////////////////////////////////////////////////////////////////
+for a in range(len(id_livro)):                              #///////////////////////////////////////////////
+    info_livros[id_livro[a]] = []                           #///////////////////////////////////////////////
+    for coluna in planilha_ids_livros.iter_cols():          #///////////////////////////////////////////////
+        info_livros[id_livro[a]].append(coluna[a].value)    #///////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ##################################################################################################################
 
@@ -165,10 +187,9 @@ def altera_aluno():
 ##################################################################################################################
 
 while True:
-    print(len(id_aluno), "aluno")
-    print(len(id_livro), "livro")
-    print(id_aluno, "aluno")
-    print(id_livro, "livro")
+    
+    print(len(info_livros), "len")
+    print(info_livros, "info_livros")
     print("############## MENU ##############")
     print("1 = CADASTRO ALUNO/LIVRO")
     print("2 = ALTERAÇÃO DE CADASTRO ALUNO/LIVRO")
