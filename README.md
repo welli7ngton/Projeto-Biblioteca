@@ -1,2 +1,3 @@
-# Projeto-Biblioteca
-Repositório destinado para o projeto da minha biblioteca.
+# Branch para testes de códigos
+
+Branch para realizar alterações de código e testes sem danificar o código original do projeto
