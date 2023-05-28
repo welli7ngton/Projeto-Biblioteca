@@ -1,7 +1,7 @@
 import random, openpyxl, time
 from openpyxl import Workbook
 
-# listas para salvar os identificadores únicos e não ter cadastro duplicado
+# listas para salvar os identificadores únicos e não ter cadastro du    
 id_aluno = []
 id_livro = []
 
@@ -11,13 +11,16 @@ info_livros = {}
 
 #################################################################################################################
 
+# criação da base de dados
+# verifica se a planilha já existe e cria o arquivo caso não exista
 try:
     database_ids = openpyxl.load_workbook("ids_alunos_livros.xlsx")
+
 except FileNotFoundError:
     database_ids = Workbook()
     database_ids.save("ids_alunos_livros.xlsx")
 
-
+# cria uma sheet chamada ids_alunos na base de dados caso não exista
 if "ids_alunos"  in database_ids.sheetnames:
     planilha_ids_alunos = database_ids["ids_alunos"]
 else:
@@ -25,6 +28,7 @@ else:
     planilha_ids_alunos.title = "ids_alunos"
     database_ids.save("ids_alunos_livros.xlsx")
 
+# for para exportar os identificadores dos alunos para a lista 
 for celula in planilha_ids_alunos["A"]:
     id_aluno.append(celula.value)
 
@@ -63,8 +67,9 @@ for a in range(len(id_livro)):                              #///////////////////
 
 ##################################################################################################################
 
+# função para cadastro de alunos
 def cadastra_aluno():
-       
+    # criação de verificador unico   
     verificador = random.randint(0, 9999)
     if verificador not in id_aluno:
         id_aluno.append(verificador)
@@ -79,11 +84,14 @@ def cadastra_aluno():
     contato = input()
     print("Endereço: Rua, Bairro, Número.:")
     endereco = input()
+
+    # atualizando dicionário
     info_alunos[str(verificador)] = f"Nome = {nome.capitalize()}, Série = {serie}, Turno = {turno}, Idade = {idade}, Contato = {contato}, Endereço = {endereco.capitalize()}"
 
     
     proxima_linha_aluno = planilha_ids_alunos.max_row + 1
 
+    # atualizando a planilha
     planilha_ids_alunos[f"A{proxima_linha_aluno}"] = verificador
     planilha_ids_alunos[f"B{proxima_linha_aluno}"] = nome.capitalize()
     planilha_ids_alunos[f"C{proxima_linha_aluno}"] = serie
@@ -92,10 +100,11 @@ def cadastra_aluno():
     planilha_ids_alunos[f"F{proxima_linha_aluno}"] = contato
     planilha_ids_alunos[f"G{proxima_linha_aluno}"] = endereco.capitalize()
 
+    # salvando dados
     database_ids.save("ids_alunos_livros.xlsx")
     
 
-
+# função para cadastro livros
 def cadastra_livro():
     
     titulo_livro = input("Digite o título do livro: ")
@@ -103,12 +112,14 @@ def cadastra_livro():
     autor = input("Digite o Autor: ")
     editora = input("Digite a Editora: ")
     qtd = input("Digite a quantidade: ")
+    # verificando se a quantidade é um valor numérico
     while True:
         if qtd.isdigit() == False:
             qtd = input("Digite um valor válido, um número: ")
         else:
             break
     numeracao = input("Digite a numeração: ")
+    # verificano se a numeração do livro é um valor numérico
     while True:
         if numeracao.isdigit():
             while True:
@@ -123,7 +134,7 @@ def cadastra_livro():
 
             
     proxima_linha_livro = planilha_ids_livros.max_row + 1
-
+    # atualizando a planilha
     planilha_ids_livros[f"A{proxima_linha_livro}"] = numeracao
     planilha_ids_livros[f"B{proxima_linha_livro}"] = titulo_livro.capitalize()
     planilha_ids_livros[f"B{proxima_linha_livro}"] = genero.capitalize()
@@ -131,9 +142,10 @@ def cadastra_livro():
     planilha_ids_livros[f"E{proxima_linha_livro}"] = editora.capitalize()
     planilha_ids_livros[f"F{proxima_linha_livro}"] = int(qtd)
 
-
+    # atualizando dicionário
     info_livros[numeracao] = f"Título = {titulo_livro.capitalize()}, Gênero = {genero.capitalize()}, Autor = {autor.capitalize()},Editora =  {editora.capitalize()}, Quantidade = {qtd}, Numeração = {numeracao}"
     id_livro.append(numeracao) 
+
     print("############ As informações do livro cadasrtado são: ############")  
     print("NUMERAÇÃO: ", numeracao) 
     print(info_livros[numeracao])
@@ -142,7 +154,9 @@ def cadastra_livro():
 
 ##################################################################################################################
 
+# funções para alterações de cadastro
 def altera_livro():
+    # verificação de existencia do livro
     while True:
         num_livro = input("Digite a numeração do livro que quer alterar: ")
         if num_livro not in id_livro:
@@ -153,12 +167,13 @@ def altera_livro():
             print(info_livros[num_livro])
             print("Digite as alterações:")
 
+            # cadastro de alterações
             titulo_livro = input("Digite o título do livro: ")
             genero = input("Digite o gênero do livro: ")
             autor = input("Digite o Autor: ")
             editora = input("Digite a Editora: ")
             qtd = int(input("Digite a quantidade: "))
-            
+            # atualizando dados no dicionário
             info_livros[num_livro] = f"Título = {titulo_livro.capitalize()}, Gênero = {genero.capitalize()}, Autor = {autor.capitalize()},Editora =  {editora.capitalize()}, Quantidade = {qtd}"
             break
        
@@ -188,6 +203,7 @@ def altera_aluno():
 
 while True:
     
+    # menu de opções
     print(len(info_livros), "len")
     print(info_livros, "info_livros")
     print("############## MENU ##############")
@@ -215,7 +231,7 @@ while True:
                         else: print("Digite um valor válido.")
 
                     break
-                else:
+                elif r == "2":
                     cadastra_livro()
                     while True:               
                         r = input("Deseja cadastrar mais um livro [S]im [N]ão: ")
