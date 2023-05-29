@@ -3,7 +3,7 @@
 Este é um projeto de um sistema para gerenciamento de biblioteca em Python que permite cadastrar livros, alunos e prazos para entrega. O sistema utiliza a biblioteca Openpyxl para a manipulação dos dados e uma planilha do Excel como fonte de armazenamento.
 
 # Funcionalidades
-O sistema de biblioteca oferece as seguintes funcionalidades:
+O sistema de biblioteca vai oferecer as seguintes funcionalidades:
 
 Cadastro de Livros: Permite adicionar informações de novos livros, como título, autor, gênero, etc.
 
