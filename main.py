@@ -211,7 +211,7 @@ while True:
     print("################ MENU ################")
     print("1 = CADASTRO ALUNO/LIVRO")
     print("2 = ALTERAÇÃO DE CADASTRO ALUNO/LIVRO")
-    print("0 = ENCERRAR PROGRAMA")
+    print("0 = SALVAR E ENCERRAR")
 
     r = input("Escolha a ação: ")
     if r == "1":
