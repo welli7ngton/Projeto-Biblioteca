@@ -70,13 +70,13 @@ for a in range(len(id_livro)):                              #///////////////////
 # função para cadastro de alunos
 def cadastra_aluno():
     # criação de verificador unico   
-    identificador = 0
+    verificador = 0
     while True:
-        if identificador not in id_aluno:
-            id_aluno.append(identificador)
+        if verificador not in id_aluno:
+            id_aluno.append(verificador)
             break
         else:
-            identificador += 1
+            verificador += 1
  
     nome = input("Nome do Aluno: ")
     
@@ -127,7 +127,7 @@ def cadastra_livro():
     while True:
         if numeracao.isdigit():
             while True:
-                if numeracao not in livros and numeracao.isdigit():
+                if numeracao not in id_livro and numeracao.isdigit():
                     break
                 else:
                     print("Livro já cadastrado ou numeração inválida.")
