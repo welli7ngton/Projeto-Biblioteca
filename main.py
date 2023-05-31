@@ -14,22 +14,22 @@ info_livros = {}
 # criação da base de dados
 # verifica se a planilha já existe e cria o arquivo caso não exista
 try:
-    database_ids = openpyxl.load_workbook("ids_alunos_livros.xlsx")
+    database_ids = openpyxl.load_workbook("biblioteca.xlsx")
 
 except FileNotFoundError:
     database_ids = Workbook()
-    database_ids.save("ids_alunos_livros.xlsx")
+    database_ids.save("biblioteca.xlsx")
 
-# cria uma sheet chamada ids_alunos na base de dados caso não exista
-if "ids_alunos"  in database_ids.sheetnames:
-    planilha_ids_alunos = database_ids["ids_alunos"]
+# cria uma sheet chamada alunos na base de dados caso não exista
+if "alunos"  in database_ids.sheetnames:
+    planilha_alunos = database_ids["alunos"]
 else:
-    planilha_ids_alunos = database_ids.create_sheet("ids_alunos")
-    planilha_ids_alunos.title = "ids_alunos"
-    database_ids.save("ids_alunos_livros.xlsx")
+    planilha_alunos = database_ids.create_sheet("alunos")
+    planilha_alunos.title = "alunos"
+    database_ids.save("biblioteca.xlsx")
 
 # for para exportar os identificadores dos alunos para a lista 
-for celula in planilha_ids_alunos["A"]:
+for celula in planilha_alunos["A"]:
     id_aluno.append(celula.value)
 
 
@@ -39,18 +39,18 @@ for celula in planilha_ids_alunos["A"]:
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 for a in range(len(id_aluno)):                              #///////////////////////////////////////////////
     info_alunos[id_aluno[a]] = []                           #///////////////////////////////////////////////
-    for coluna in planilha_ids_alunos.iter_cols():          #///////////////////////////////////////////////
+    for coluna in planilha_alunos.iter_cols():              #///////////////////////////////////////////////
         info_alunos[id_aluno[a]].append(coluna[a].value)    #///////////////////////////////////////////////
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-if "ids_livros"  in database_ids.sheetnames:
-    planilha_ids_livros = database_ids["ids_livros"]
+if "livros"  in database_ids.sheetnames:
+    planilha_livros = database_ids["livros"]
 else:
-    planilha_ids_livros = database_ids.create_sheet("ids_livros")
-    planilha_ids_livros.title = "ids_livros"
-    database_ids.save("ids_alunos_livros.xlsx")
-    
-for celula in planilha_ids_livros["A"]:
+    planilha_livros = database_ids.create_sheet("livros")
+    planilha_livros.title = "livros"
+    database_ids.save("biblioteca.xlsx")
+  
+for celula in planilha_livros["A"]:
     id_livro.append(celula.value)
 
 
@@ -61,7 +61,7 @@ for celula in planilha_ids_livros["A"]:
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 for a in range(len(id_livro)):                              #///////////////////////////////////////////////
     info_livros[id_livro[a]] = []                           #///////////////////////////////////////////////
-    for coluna in planilha_ids_livros.iter_cols():          #///////////////////////////////////////////////
+    for coluna in planilha_livros.iter_cols():              #///////////////////////////////////////////////
         info_livros[id_livro[a]].append(coluna[a].value)    #///////////////////////////////////////////////
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -70,9 +70,13 @@ for a in range(len(id_livro)):                              #///////////////////
 # função para cadastro de alunos
 def cadastra_aluno():
     # criação de verificador unico   
-    verificador = random.randint(0, 9999)
-    if verificador not in id_aluno:
-        id_aluno.append(verificador)
+    verificador = 0
+    while True:
+        if verificador not in id_aluno:
+            id_aluno.append(verificador)
+            break
+        else:
+            verificador += 1
  
     nome = input("Nome do Aluno: ")
     
@@ -89,19 +93,19 @@ def cadastra_aluno():
     info_alunos[str(verificador)] = f"Nome = {nome.capitalize()}, Série = {serie}, Turno = {turno}, Idade = {idade}, Contato = {contato}, Endereço = {endereco.capitalize()}"
 
     
-    proxima_linha_aluno = planilha_ids_alunos.max_row + 1
+    proxima_linha_aluno = planilha_alunos.max_row + 1
 
     # atualizando a planilha
-    planilha_ids_alunos[f"A{proxima_linha_aluno}"] = verificador
-    planilha_ids_alunos[f"B{proxima_linha_aluno}"] = nome.capitalize()
-    planilha_ids_alunos[f"C{proxima_linha_aluno}"] = serie
-    planilha_ids_alunos[f"D{proxima_linha_aluno}"] = turno.capitalize()
-    planilha_ids_alunos[f"E{proxima_linha_aluno}"] = idade
-    planilha_ids_alunos[f"F{proxima_linha_aluno}"] = contato
-    planilha_ids_alunos[f"G{proxima_linha_aluno}"] = endereco.capitalize()
+    planilha_alunos[f"A{proxima_linha_aluno}"] = verificador
+    planilha_alunos[f"B{proxima_linha_aluno}"] = nome.capitalize()
+    planilha_alunos[f"C{proxima_linha_aluno}"] = serie
+    planilha_alunos[f"D{proxima_linha_aluno}"] = turno.capitalize()
+    planilha_alunos[f"E{proxima_linha_aluno}"] = idade
+    planilha_alunos[f"F{proxima_linha_aluno}"] = contato
+    planilha_alunos[f"G{proxima_linha_aluno}"] = endereco.capitalize()
 
     # salvando dados
-    database_ids.save("ids_alunos_livros.xlsx")
+    database_ids.save("biblioteca.xlsx")
     
 
 # função para cadastro livros
@@ -133,14 +137,14 @@ def cadastra_livro():
             print("Digite uma numeração válida.")
 
             
-    proxima_linha_livro = planilha_ids_livros.max_row + 1
+    proxima_linha_livro = planilha_livros.max_row + 1
     # atualizando a planilha
-    planilha_ids_livros[f"A{proxima_linha_livro}"] = numeracao
-    planilha_ids_livros[f"B{proxima_linha_livro}"] = titulo_livro.capitalize()
-    planilha_ids_livros[f"B{proxima_linha_livro}"] = genero.capitalize()
-    planilha_ids_livros[f"D{proxima_linha_livro}"] = autor.capitalize()
-    planilha_ids_livros[f"E{proxima_linha_livro}"] = editora.capitalize()
-    planilha_ids_livros[f"F{proxima_linha_livro}"] = int(qtd)
+    planilha_livros[f"A{proxima_linha_livro}"] = numeracao
+    planilha_livros[f"B{proxima_linha_livro}"] = titulo_livro.capitalize()
+    planilha_livros[f"C{proxima_linha_livro}"] = genero.capitalize()
+    planilha_livros[f"D{proxima_linha_livro}"] = autor.capitalize()
+    planilha_livros[f"E{proxima_linha_livro}"] = editora.capitalize()
+    planilha_livros[f"F{proxima_linha_livro}"] = int(qtd)
 
     # atualizando dicionário
     info_livros[numeracao] = f"Título = {titulo_livro.capitalize()}, Gênero = {genero.capitalize()}, Autor = {autor.capitalize()},Editora =  {editora.capitalize()}, Quantidade = {qtd}, Numeração = {numeracao}"
@@ -150,7 +154,7 @@ def cadastra_livro():
     print("NUMERAÇÃO: ", numeracao) 
     print(info_livros[numeracao])
     print("#################################################################")
-    database_ids.save("ids_alunos_livros.xlsx")
+    database_ids.save("biblioteca.xlsx")
 
 ##################################################################################################################
 
@@ -159,7 +163,7 @@ def altera_livro():
     # verificação de existencia do livro
     while True:
         num_livro = input("Digite a numeração do livro que quer alterar: ")
-        if num_livro not in id_livro:
+        if num_livro not in in_livro:
             print("Livro não cadastrado ou numeração inválida, revise e digite uma numeração válida.")
             continue
         else:
@@ -204,9 +208,7 @@ def altera_aluno():
 while True:
     
     # menu de opções
-    print(len(info_livros), "len")
-    print(info_livros, "info_livros")
-    print("############## MENU ##############")
+    print("################ MENU ################")
     print("1 = CADASTRO ALUNO/LIVRO")
     print("2 = ALTERAÇÃO DE CADASTRO ALUNO/LIVRO")
     print("0 = ENCERRAR PROGRAMA")
@@ -280,6 +282,6 @@ while True:
     elif r == "0":
         
         print("Encerrando...")
-        database_ids.save("ids_alunos_livros.xlsx")
+        database_ids.save("biblioteca.xlsx")
         time.sleep(3)
         break
