@@ -196,7 +196,7 @@ def altera_aluno():
             serie = input("Série: ")
             turno = input("Turno: ")
             idade = int(input("Idade: "))
-            print("Contato: (xx) x xxxx-xxxx")
+            print("Contato: 00 0 0000 0000")
             contato = input()
             print("Endereço: Rua, Bairro, Número.:")
             endereco = input()
