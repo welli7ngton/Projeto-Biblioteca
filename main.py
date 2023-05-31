@@ -39,7 +39,7 @@ for celula in planilha_alunos["A"]:
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 for a in range(len(id_aluno)):                              #///////////////////////////////////////////////
     info_alunos[id_aluno[a]] = []                           #///////////////////////////////////////////////
-    for coluna in planilha_alunos.iter_cols():          #///////////////////////////////////////////////
+    for coluna in planilha_alunos.iter_cols():              #///////////////////////////////////////////////
         info_alunos[id_aluno[a]].append(coluna[a].value)    #///////////////////////////////////////////////
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -61,7 +61,7 @@ for celula in planilha_livros["A"]:
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 for a in range(len(id_livro)):                              #///////////////////////////////////////////////
     info_livros[id_livro[a]] = []                           #///////////////////////////////////////////////
-    for coluna in planilha_livros.iter_cols():          #///////////////////////////////////////////////
+    for coluna in planilha_livros.iter_cols():              #///////////////////////////////////////////////
         info_livros[id_livro[a]].append(coluna[a].value)    #///////////////////////////////////////////////
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -141,14 +141,14 @@ def cadastra_livro():
     # atualizando a planilha
     planilha_livros[f"A{proxima_linha_livro}"] = numeracao
     planilha_livros[f"B{proxima_linha_livro}"] = titulo_livro.capitalize()
-    planilha_livros[f"B{proxima_linha_livro}"] = genero.capitalize()
+    planilha_livros[f"C{proxima_linha_livro}"] = genero.capitalize()
     planilha_livros[f"D{proxima_linha_livro}"] = autor.capitalize()
     planilha_livros[f"E{proxima_linha_livro}"] = editora.capitalize()
     planilha_livros[f"F{proxima_linha_livro}"] = int(qtd)
 
     # atualizando dicionário
     info_livros[numeracao] = f"Título = {titulo_livro.capitalize()}, Gênero = {genero.capitalize()}, Autor = {autor.capitalize()},Editora =  {editora.capitalize()}, Quantidade = {qtd}, Numeração = {numeracao}"
-    livros.append(numeracao) 
+    id_livro.append(numeracao) 
 
     print("############ As informações do livro cadasrtado são: ############")  
     print("NUMERAÇÃO: ", numeracao) 
@@ -163,7 +163,7 @@ def altera_livro():
     # verificação de existencia do livro
     while True:
         num_livro = input("Digite a numeração do livro que quer alterar: ")
-        if num_livro not in livros:
+        if num_livro not in in_livro:
             print("Livro não cadastrado ou numeração inválida, revise e digite uma numeração válida.")
             continue
         else:
@@ -208,9 +208,7 @@ def altera_aluno():
 while True:
     
     # menu de opções
-    print(len(info_livros), "len")
-    print(info_livros, "info_livros")
-    print("############## MENU ##############")
+    print("################ MENU ################")
     print("1 = CADASTRO ALUNO/LIVRO")
     print("2 = ALTERAÇÃO DE CADASTRO ALUNO/LIVRO")
     print("0 = ENCERRAR PROGRAMA")
@@ -282,7 +280,9 @@ while True:
         
 
     elif r == "0":
-        
+        print(info_livros,"info livro")
+        print(id_aluno, "id aluno")
+        print(id_livro, "id livro")
         print("Encerrando...")
         database_ids.save("biblioteca.xlsx")
         time.sleep(3)
