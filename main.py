@@ -70,13 +70,13 @@ for a in range(len(id_livro)):                              #///////////////////
 # função para cadastro de alunos
 def cadastra_aluno():
     # criação de verificador unico   
-    verificador = 0
-    while True:
-        if verificador not in id_aluno:
-            id_aluno.append(verificador)
-            break
-        else:
-            verificador += 1
+    verificador = len(id_aluno) + 1
+    #while True:
+        #if verificador not in id_aluno:
+            #id_aluno.append(verificador)
+            #break
+        #else:
+            #verificador += 1
  
     nome = input("Nome do Aluno: ")
     
