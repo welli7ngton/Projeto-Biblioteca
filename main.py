@@ -90,7 +90,7 @@ def cadastra_aluno():
     endereco = input()
 
     # atualizando dicionário
-    info_alunos[str(verificador)] = f"Nome = {nome.capitalize()}, Série = {serie}, Turno = {turno}, Idade = {idade}, Contato = {contato}, Endereço = {endereco.capitalize()}"
+    info_alunos[verificador] = f"Nome = {nome.capitalize()}, Série = {serie}, Turno = {turno}, Idade = {idade}, Contato = {contato}, Endereço = {endereco.capitalize()}"
 
     
     proxima_linha_aluno = planilha_alunos.max_row + 1
@@ -123,11 +123,11 @@ def cadastra_livro():
         else:
             break
     numeracao = input("Digite a numeração: ")
-    # verificano se a numeração do livro é um valor numérico
+    # verificando se a numeração do livro é um valor numérico
     while True:
         if numeracao.isdigit():
             while True:
-                if numeracao not in id_livro and numeracao.isdigit():
+                if int(numeracao) not in id_livro and numeracao.isdigit():
                     break
                 else:
                     print("Livro já cadastrado ou numeração inválida.")
@@ -136,7 +136,8 @@ def cadastra_livro():
         else:
             print("Digite uma numeração válida.")
 
-            
+    numeracao = int(numeracao)
+
     proxima_linha_livro = planilha_livros.max_row + 1
     # atualizando a planilha
     planilha_livros[f"A{proxima_linha_livro}"] = numeracao
@@ -162,13 +163,13 @@ def cadastra_livro():
 def altera_livro():
     # verificação de existencia do livro
     while True:
-        num_livro = input("Digite a numeração do livro que quer alterar: ")
-        if num_livro not in in_livro:
+        numeracao = int(input("Digite a numeração do livro que quer alterar: "))
+        if numeracao not in id_livro:
             print("Livro não cadastrado ou numeração inválida, revise e digite uma numeração válida.")
             continue
         else:
             print("O livro que vai ser alterado é:")
-            print(info_livros[num_livro])
+            print(info_livros[numeracao])
             print("Digite as alterações:")
 
             # cadastro de alterações
@@ -176,32 +177,65 @@ def altera_livro():
             genero = input("Digite o gênero do livro: ")
             autor = input("Digite o Autor: ")
             editora = input("Digite a Editora: ")
-            qtd = int(input("Digite a quantidade: "))
+            qtd = input("Digite a quantidade: ")
+            while True:
+                if qtd.isdigit() == False:
+                    qtd = input("Digite um valor válido, um número: ")
+                else:
+                    qtd = int(qtd)
+                    break
+            
             # atualizando dados no dicionário
-            info_livros[num_livro] = f"Título = {titulo_livro.capitalize()}, Gênero = {genero.capitalize()}, Autor = {autor.capitalize()},Editora =  {editora.capitalize()}, Quantidade = {qtd}"
+            info_livros[numeracao] = f"Título = {titulo_livro.capitalize()}, Gênero = {genero.capitalize()}, Autor = {autor.capitalize()},Editora =  {editora.capitalize()}, Quantidade = {qtd}"
+
+
+
+            linha_livro = id_livro.index(numeracao) + 1
+
+            planilha_livros[f"B{linha_livro}"] = titulo_livro.capitalize()
+            planilha_livros[f"C{linha_livro}"] = genero.capitalize()
+            planilha_livros[f"D{linha_livro}"] = autor.capitalize()
+            planilha_livros[f"E{linha_livro}"] = editora.capitalize()
+            planilha_livros[f"F{linha_livro}"] = qtd
+
             break
-       
+                
 def altera_aluno():
     while True:
-        num_aluno = input("Digite a numeração do Aluno que quer alterar: ")
-        if num_aluno not in id_aluno:
+        verificador = int(input("Digite o ID do Aluno que quer alterar: "))
+        if verificador not in id_aluno:
             print("Aluno não cadastrado ou numeração inválida, revise e digite uma numeração válida.")
             continue
         else:
             print("O cadastro que vai ser alterado é:")
-            print(info_alunos[num_aluno])
+            print(info_alunos[verificador])
             print("Digite as alterações:")
 
             nome = input("Nome do Aluno: ")
-            serie = input("Série: ")
+            serie = str(input("Série: "))
             turno = input("Turno: ")
             idade = int(input("Idade: "))
             print("Contato: 00 0 0000 0000")
             contato = input()
             print("Endereço: Rua, Bairro, Número.:")
             endereco = input()
-            info_alunos[num_aluno] = f"Nome = {nome.capitalize()}, Série = {serie}, Turno = {turno}, Idade = {idade}, Contato = {contato}, Endereço = {endereco.capitalize()}"
+
+            # atualizando dicionário
+            info_alunos[verificador] = f"Nome = {nome.capitalize()}, Série = {serie}, Turno = {turno}, Idade = {idade}, Contato = {contato}, Endereço = {endereco.capitalize()}"
+
+            # atualizando planilha
+
+            planilha_alunos[f"B{verificador + 1}"] = nome.capitalize()
+            planilha_alunos[f"C{verificador + 1}"] = serie
+            planilha_alunos[f"D{verificador + 1}"] = turno.capitalize()
+            planilha_alunos[f"E{verificador + 1}"] = idade
+            planilha_alunos[f"F{verificador + 1}"] = contato
+            planilha_alunos[f"G{verificador + 1}"] = endereco.capitalize()
+
+            # salvando dados
+            database_ids.save("biblioteca.xlsx")
             break
+
 
 ##################################################################################################################
 
@@ -211,7 +245,7 @@ while True:
     print("################ MENU ################")
     print("1 = CADASTRO ALUNO/LIVRO")
     print("2 = ALTERAÇÃO DE CADASTRO ALUNO/LIVRO")
-    print("0 = SALVAR E ENCERRAR")
+    print("0 = ENCERRAR PROGRAMA")
 
     r = input("Escolha a ação: ")
     if r == "1":
