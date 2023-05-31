@@ -1,7 +1,7 @@
 import random, openpyxl, time
 from openpyxl import Workbook
 
-# listas para salvar os identificadores únicos e não ter cadastro du    
+# listas para salvar os identificadores únicos e não ter cadastro duplicados   
 id_aluno = []
 id_livro = []
 
@@ -69,7 +69,7 @@ for a in range(len(id_livro)):                              #///////////////////
 
 # função para cadastro de alunos
 def cadastra_aluno():
-    # criação de verificador unico   
+    # criação de verificador unico    
     verificador = len(id_aluno)
     
     if verificador not in id_aluno:
