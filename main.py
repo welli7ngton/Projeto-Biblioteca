@@ -280,9 +280,7 @@ while True:
         
 
     elif r == "0":
-        print(info_livros,"info livro")
-        print(id_aluno, "id aluno")
-        print(id_livro, "id livro")
+        
         print("Encerrando...")
         database_ids.save("biblioteca.xlsx")
         time.sleep(3)
