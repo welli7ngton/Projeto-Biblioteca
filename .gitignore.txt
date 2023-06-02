@@ -1,3 +1,4 @@
-.[xlsx]
-~
+# ignora as atualizacoes da plannilha
+*.xlsx
+
 
