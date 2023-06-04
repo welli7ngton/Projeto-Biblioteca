@@ -1,4 +1,4 @@
-import random, openpyxl, time
+import openpyxl, time
 from openpyxl import Workbook
 
 # listas para salvar os identificadores únicos e não ter cadastro duplicados   
@@ -36,7 +36,6 @@ else:
 for celula in planilha_alunos["A"]:
     id_aluno.append(celula.value)
 
-
 # o primeiro for cria uma chave de dicionáro para cada identificador único do aluno com uma lista vazia
 # o segundo for itera sobre as colunas da planilha e adiciona os dados(das linhas) na lista vinculando o 
 # identificador único a cada conjunto de atribunos ex: nome, idade, turno...
@@ -56,8 +55,6 @@ else:
   
 for celula in planilha_livros["A"]:
     id_livro.append(celula.value)
-
-
 
 # o primeiro for cria uma chave de dicionáro para cada identificador único de livro com uma lista vazia
 # o segundo for itera sobre as colunas da planilha e adiciona os dados(das linhas) na lista vinculando o 
@@ -84,10 +81,6 @@ for a in range(len(id_emprestimos)):
     dic_emprestimos[id_emprestimos[a]] = []                           
     for coluna in planilha_emprestimos.iter_cols():              
         dic_emprestimos[id_emprestimos[a]].append(coluna[a].value)
-
-
-
-
 
 ##################################################################################################################
 
@@ -210,8 +203,6 @@ def altera_livro():
             # atualizando dados no dicionário
             info_livros[numeracao] = f"Título = {titulo_livro.capitalize()}, Gênero = {genero.capitalize()}, Autor = {autor.capitalize()},Editora =  {editora.capitalize()}, Quantidade = {qtd}"
 
-
-
             linha_livro = id_livro.index(numeracao) + 1
 
             planilha_livros[f"B{linha_livro}"] = titulo_livro.capitalize()
@@ -315,7 +306,6 @@ def devolucao():
             break
         else:
             print("Data de devolução ou ID inválidos. Repita o processo.")
-
 
 
 ##################################################################################################################
