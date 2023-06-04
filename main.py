@@ -4,10 +4,14 @@ from openpyxl import Workbook
 # listas para salvar os identificadores únicos e não ter cadastro duplicados   
 id_aluno = []
 id_livro = []
+id_emprestimos = []
 
 # dicionarios para vincular identificadores únicos aos atributos 
 info_alunos = {}
 info_livros = {}
+
+# dicionarios para emprestimos
+dic_emprestimos = {}
 
 #################################################################################################################
 
@@ -65,9 +69,29 @@ for a in range(len(id_livro)):                              #///////////////////
         info_livros[id_livro[a]].append(coluna[a].value)    #///////////////////////////////////////////////
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+# cria uma sheet chamada emprestimos na base de dados caso não exista
+if "emprestimos"  in database_ids.sheetnames:
+    planilha_emprestimos = database_ids["emprestimos"]
+else:
+    planilha_emprestimos = database_ids.create_sheet("emprestimos")
+    planilha_emprstimos.title = "emprestimos"
+    database_ids.save("biblioteca.xlsx")
+
+for celula in planilha_emprestimos["A"]:
+    id_emprestimos.append(celula.value)
+
+for a in range(len(id_emprestimos)):                              
+    dic_emprestimos[id_emprestimos[a]] = []                           
+    for coluna in planilha_emprestimos.iter_cols():              
+        dic_emprestimos[id_emprestimos[a]].append(coluna[a].value)
+
+
+
+
+
 ##################################################################################################################
 
-# função para cadastro de alunos
+# funções para cadastro de alunos e livros
 def cadastra_aluno():
     # criação de verificador unico    
     verificador = len(id_aluno)
@@ -106,10 +130,8 @@ def cadastra_aluno():
 
     # salvando dados
     database_ids.save("biblioteca.xlsx")
-    
 
-# função para cadastro livros
-def cadastra_livro():
+def cadastra_livro():    
     
     titulo_livro = input("Digite o título do livro: ")
     genero = input("Digite o gênero do livro: ")
@@ -236,6 +258,65 @@ def altera_aluno():
             database_ids.save("biblioteca.xlsx")
             break
 
+##################################################################################################################
+
+# funções para empréstimo e devolução de livros
+
+def emprestimo():
+    global info_alunos
+    while True:
+        key_aluno = int(input("Digite o ID do aluno: "))
+        if key_aluno not in info_alunos:
+            print("ID não encontrado, digite um ID válido.")
+            continue
+        else:
+            print("Os dados do aluno são:")
+            print(info_alunos[key_aluno])
+            livro = input("Digite o Livro que será emprestado: ")
+            devo = str(input("Digite a data para devolução(Dia/Mês): "))
+            chave = str(key_aluno)+devo.replace("/", "")
+            
+            while chave  in dic_emprestimos:
+                print("O aluno já tem um livro para entregar nessa data, adicione mais um dia na data de entrega para poder emprestar mais um livro.")
+                devo = str(input("Digite a data para devolução(Dia/Mês): "))
+                chave = str(key_aluno)+devo.replace("/", "")
+                
+            else:
+                dic_emprestimos[chave] = info_alunos[key_aluno], livro, devo
+                print(dic_emprestimos[chave])
+                break
+
+    linha = planilha_emprestimos.max_row + 1
+    # atualizando a planilha
+    planilha_emprestimos[f"A{linha}"] = str(chave)
+    planilha_emprestimos[f"B{linha}"] = str(info_alunos[key_aluno])
+    planilha_emprestimos[f"C{linha}"] = livro
+    planilha_emprestimos[f"D{linha}"] = devo
+    database_ids.save("biblioteca.xlsx")
+
+def devolucao():
+    global dic_emprestimos
+    while True:
+        devo = str(input("DIGITE A DATA QUE FOI PROGRAMADA PARA ENTREGA(DD/MM): "))
+        idaluno = input("Digite o ID do aluno: ")
+        chave = idaluno+devo.replace("/", "")
+        if chave in dic_emprestimos:
+            
+            linha = 1
+            for celula in planilha_emprestimos["A"]:
+                if celula.value == chave:
+                    planilha_emprestimos.delete_rows(linha)
+                    break
+                linha +=1
+                
+            dic_emprestimos.pop(chave)
+            database_ids.save("biblioteca.xlsx")
+            print("Devolução realizada.")
+            break
+        else:
+            print("Data de devolução ou ID inválidos. Repita o processo.")
+
+
 
 ##################################################################################################################
 
@@ -245,10 +326,16 @@ while True:
     print("################ MENU ################")
     print("1 = CADASTRO ALUNO/LIVRO")
     print("2 = ALTERAÇÃO DE CADASTRO ALUNO/LIVRO")
+    print("3 = EMPRÉSTIMO DE LIVRO")
+    print("4 = DEVOLUÇÃO DE LIVRO")
+    print("5 = RELAÇÃO DE ALUNOS CADASTRADOS")
+    print("6 = RELAÇÃO DE LIVROS CADASTRADOS")
+    print("7 = RELAÇÃO DE EMPRÉSTIMOS")
     print("0 = ENCERRAR PROGRAMA")
 
     r = input("Escolha a ação: ")
     if r == "1":
+        print("AREÁ DE CADASTRO")
         while True:
             r = input("Digite [1] para cadastrar Aluno ou [2] para Livro: ")
             if r not in "12":
@@ -256,6 +343,7 @@ while True:
                 continue
             else:
                 if r == "1":
+                    
                     cadastra_aluno() 
                     while True:               
                         r = input("Deseja cadastrar mais um aluno [S]im [N]ão: ")
@@ -268,6 +356,7 @@ while True:
 
                     break
                 elif r == "2":
+                    
                     cadastra_livro()
                     while True:               
                         r = input("Deseja cadastrar mais um livro [S]im [N]ão: ")
@@ -282,6 +371,7 @@ while True:
 
     elif r == "2":
         while True:
+            print("AREÁ DE ALTERAÇÃO DE CADASTRO")
             r = input("Digite [1] para alterar Aluno ou [2] para Livro: ")
             if r not in "12":
                 print("Esse valor não é válido.")
@@ -312,6 +402,32 @@ while True:
 
                     break
         
+    elif r == "3":
+        print("ÁREA DE EMPRÉSTIMO")
+        emprestimo()
+
+    elif r == "4":
+        print("ÁREA DE DEVOLUÇÃO")
+        devolucao()
+
+    elif r == "5":
+        print("RELAÇÃO DE ALUNOS CADASTRADOS")
+        print("Gerando...")
+        time.sleep(3)
+        for item in info_alunos:
+            print(info_alunos[item])
+    elif r == "6":
+        print("RELAÇÃO DE LIVROS CADASTRADOS")
+        print("Gerando...")
+        time.sleep(3)
+        for item in info_livros:
+            print(info_livros[item])
+    elif r == "7":
+        print("RELAÇÃO DE EMPRÉSTIMOS")
+        print("Gerando...")
+        time.sleep(3)
+        for item in dic_emprestimos:
+            print(dic_emprestimos[item])
 
     elif r == "0":
         
