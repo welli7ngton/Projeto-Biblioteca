@@ -23,6 +23,7 @@ Consulta de Livros Emprestados: Permite visualizar os livros emprestados e suas 
 O projeto utiliza as seguintes tecnologias:
 
 Python: Linguagem de programação principal.
+
 Openpyxl: Biblioteca Python para manipulação de dados em formato tabular.
 
 Excel: Planilha do Excel como fonte de armazenamento dos dados.
