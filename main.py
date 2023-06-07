@@ -109,7 +109,11 @@ def cadastra_aluno():
     # atualizando dicionário
     info_alunos[verificador] = f"Nome = {nome.capitalize()}, Série = {serie}, Turno = {turno}, Idade = {idade}, Contato = {contato}, Endereço = {endereco.capitalize()}"
 
-    
+    print()
+    print("Os dados do aluno cadastrados são: ")
+    print(info_alunos[verificador])
+    print()
+
     proxima_linha_aluno = planilha_alunos.max_row + 1
 
     # atualizando a planilha
@@ -166,10 +170,11 @@ def cadastra_livro():
     info_livros[numeracao] = f"Título = {titulo_livro.capitalize()}, Gênero = {genero.capitalize()}, Autor = {autor.capitalize()},Editora =  {editora.capitalize()}, Quantidade = {qtd}, Numeração = {numeracao}"
     id_livro.append(numeracao) 
 
-    print("############ As informações do livro cadasrtado são: ############")  
+    print()
+    print("As informações do livro cadasrtado são:")  
     print("NUMERAÇÃO: ", numeracao) 
     print(info_livros[numeracao])
-    print("#################################################################")
+    print()
     database_ids.save("biblioteca.xlsx")
 
 ##################################################################################################################
@@ -255,14 +260,29 @@ def altera_aluno():
 
 def emprestimo():
     global info_alunos
+
+    r = input("Tem conhecimento do ID do aluno? [S]im [N]ão: ")
+    if r in "nN":
+        nome = input("Digite o nome do aluno: ")
+
+        contador = 0
+        print(info_alunos["ID"])   
+        for chave in info_alunos:    
+            if nome in info_alunos[chave][1]:  
+                print(info_alunos[chave])
+                contador += 1
+        if contador == 0:
+            print("Aluno não encontrado.")
+    
     while True:
         key_aluno = int(input("Digite o ID do aluno: "))
+
         if key_aluno not in info_alunos:
             print("ID não encontrado, digite um ID válido.")
             continue
+
         else:
-            print("Os dados do aluno são:")
-            print(info_alunos[key_aluno])
+
             livro = input("Digite o Livro que será emprestado: ")
             devo = str(input("Digite a data para devolução(Dia/Mês): "))
             chave = str(key_aluno)+devo.replace("/", "")
@@ -287,9 +307,24 @@ def emprestimo():
 
 def devolucao():
     global dic_emprestimos
+    
+
+    r = input("Tem conhecimento do ID do aluno? [S]im [N]ão: ")
+    if r in "nN":
+        nome = input("digite o nome do aluno: ")
+        contador = 0
+        print(f"Registros de {nome} nas pendências de devolução.")
+        print(dic_emprestimos["ID EMPRESTIMO"])  
+        for chave in dic_emprestimos:    
+            if nome in dic_emprestimos[chave][1]:  
+                print(dic_emprestimos[chave])
+                contador += 1
+        if contador == 0:
+            print("Aluno não encontrado.")
+            
     while True:
-        devo = str(input("DIGITE A DATA QUE FOI PROGRAMADA PARA ENTREGA(DD/MM): "))
         idaluno = input("Digite o ID do aluno: ")
+        devo = str(input("DIGITE A DATA QUE FOI PROGRAMADA PARA ENTREGA(DD/MM): "))      
         chave = idaluno+devo.replace("/", "")
         if chave in dic_emprestimos:
             
@@ -302,7 +337,9 @@ def devolucao():
                 
             dic_emprestimos.pop(chave)
             database_ids.save("biblioteca.xlsx")
+            print()
             print("Devolução realizada.")
+            print()
             break
         else:
             print("Data de devolução ou ID inválidos. Repita o processo.")
@@ -322,8 +359,10 @@ while True:
     print("6 = RELAÇÃO DE LIVROS CADASTRADOS")
     print("7 = RELAÇÃO DE EMPRÉSTIMOS")
     print("0 = ENCERRAR PROGRAMA")
+    print("######################################")
 
     r = input("Escolha a ação: ")
+    
     if r == "1":
         print("AREÁ DE CADASTRO")
         while True:
@@ -406,12 +445,14 @@ while True:
         time.sleep(3)
         for item in info_alunos:
             print(info_alunos[item])
+
     elif r == "6":
         print("RELAÇÃO DE LIVROS CADASTRADOS")
         print("Gerando...")
         time.sleep(3)
         for item in info_livros:
             print(info_livros[item])
+
     elif r == "7":
         print("RELAÇÃO DE EMPRÉSTIMOS")
         print("Gerando...")
