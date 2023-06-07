@@ -23,6 +23,7 @@ Consulta de Livros Emprestados: Permite visualizar os livros emprestados e suas 
 O projeto utiliza as seguintes tecnologias:
 
 Python: Linguagem de programação principal.
+
 Openpyxl: Biblioteca Python para manipulação de dados em formato tabular.
 
 Excel: Planilha do Excel como fonte de armazenamento dos dados.
@@ -33,11 +34,11 @@ Instale o Python em seu sistema.
 Instale a biblioteca Openpyxl usando o gerenciador de pacotes pip:
 pip install Openpyxl
 
-Execute o programa principal biblioteca.py para iniciar o sistema de biblioteca.
+Execute o programa principal main.py para iniciar o sistema de biblioteca.
 
 Siga as instruções do menu para cadastrar livros, alunos, realizar empréstimos, devoluções e consultas.
 
-Os dados são armazenados em uma planilha do Excel chamada ids_alunos_livros.xlsx
+Os dados são armazenados em uma planilha do Excel chamada biblioteca.xlsx
 
 # Observações
 Certifique-se de ter a planilha biblioteca.xlsx no mesmo diretório do arquivo main.py.
@@ -59,4 +60,4 @@ Desenvolver uma interface gráfica para facilitar a interação com o sistema.
 
 Implementar testes automatizados para garantir a qualidade do código.
 
-Sinta-se à vontade para personalizar o resumo de acordo com as necessidades do seu projeto e adicionar informações adicionais, como requisitos de instalação, créditos, licença, etc.
+### Sinta-se à vontade para personalizar o resumo de acordo com as necessidades do seu projeto e adicionar informações adicionais, como requisitos de instalação, créditos, licença, etc.
