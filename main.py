@@ -306,12 +306,12 @@ def devolucao():
 
     r = input("Tem conhecimento do ID do aluno? [S]im [N]ão: ")
     if r in "nN":
-        nome = input("digite o nome do aluno: ")
+        nome = input("Digite o nome do aluno: ")
         contador = 0
         print(f"Registros de {nome} nas pendências de devolução.")
         print(dic_emprestimos["ID EMPRESTIMO"])  
-        for chave in dic_emprestimos:    
-            if nome in dic_emprestimos[chave][1]:  
+        for chave,valor in dic_emprestimos.items():    
+            if nome.capitalize() in dic_emprestimos[chave]:  
                 print(dic_emprestimos[chave])
                 contador += 1
         if contador == 0:
