@@ -13,7 +13,6 @@ info_livros = {}
 # dicionarios para emprestimos
 dic_emprestimos = {}
 
-####################################################################################################
 
 # criação da base de dados
 # verifica se a planilha já existe e cria o arquivo caso não exista
@@ -39,7 +38,7 @@ for celula in planilha_alunos["A"]:
 # o primeiro for cria uma chave de dicionáro para cada identificador único do aluno com uma lista vazia
 # o segundo for itera sobre as colunas da planilha e adiciona os dados(das linhas) na lista vinculando o 
 # identificador único a cada conjunto de atribunos ex: nome, idade, turno...
-#///////////////////////////////////////////////////////////////////////////////////////////////////
+
 for a in range(len(id_aluno)):                              
     info_alunos[id_aluno[a]] = []                           
     for coluna in planilha_alunos.iter_cols():              
@@ -81,7 +80,6 @@ for a in range(len(id_emprestimos)):
     for coluna in planilha_emprestimos.iter_cols():              
         dic_emprestimos[id_emprestimos[a]].append(coluna[a].value)
 
-####################################################################################################
 
 # funções para cadastro de alunos e livros
 def cadastra_aluno():
@@ -176,7 +174,6 @@ def cadastra_livro():
     print()
     database_ids.save("biblioteca.xlsx")
 
-####################################################################################################
 
 # funções para alterações de cadastro
 def altera_livro():
@@ -253,7 +250,6 @@ def altera_aluno():
             database_ids.save("biblioteca.xlsx")
             break
 
-####################################################################################################
 
 # funções para empréstimo e devolução de livros
 
@@ -344,8 +340,6 @@ def devolucao():
             print("Data de devolução ou ID inválidos. Repita o processo.")
 
 
-####################################################################################################
-
 while True:
     
     # menu de opções
@@ -358,7 +352,10 @@ while True:
     print("6 = RELAÇÃO DE LIVROS CADASTRADOS")
     print("7 = RELAÇÃO DE EMPRÉSTIMOS")
     print("0 = ENCERRAR PROGRAMA")
-    print("######################################")##############
+    print("######################################")
+    r = input("Escolha a ação: ")
+    
+    if r == "1":
         print("AREÁ DE CADASTRO")
         while True:
             r = input("Digite [1] para cadastrar Aluno ou [2] para Livro: ")
