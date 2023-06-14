@@ -59,5 +59,3 @@ Utilizar um banco de dados em vez de uma planilha do Excel para armazenar os dad
 Desenvolver uma interface gráfica para facilitar a interação com o sistema.
 
 Implementar testes automatizados para garantir a qualidade do código.
-
-### Sinta-se à vontade para personalizar o resumo de acordo com as necessidades do seu projeto e adicionar informações adicionais, como requisitos de instalação, créditos, licença, etc.
